@@ -3,11 +3,12 @@
  */
 module.exports = {
 	'0'     : {"info" : "接口请求成功"},
+	'10000' : {"info" : "{message}"}, // 自定义错误消息
 	'10001' : {"info" : "Api接口不存在"},
 	'10002' : {"info" : "参数错误: {message}"},
 	'10003' : {"info" : "无操作权限"},
-	'10004' : {"info" : "permanently moved"},
-	'10005' : {"info" : "{message}"},
+	'10004' : {"info" : "permanently moved"}, // 跳转
+	'10005' : {"info" : "ticket无效，重新登录"},
 
 	'20001' : {"info" : "发送失败"},
 	'20002' : {"info" : "请勿在60内重复发送"},

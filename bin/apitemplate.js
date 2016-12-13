@@ -10,7 +10,7 @@ let paramRegular = {
 module.exports = new Api(paramRegular, function (params, request) {
 	/*主动抛出错误 测试*/
 	if(params.error){
-		throw new ApiError(10005, '出现了一些错误...');
+		throw new ApiError(10000, '出现了一些错误...');
 	}
 
 	if(params.timeout){
