@@ -1,0 +1,80 @@
+let fs = require('fs');
+let open = require('open');
+let colors = require('colors');
+let exec = require('child_process').exec;
+let action = ['get', 'post', 'put', 'delete'];
+let envConfig = require('../config/env.js').application;
+
+let newapi = (process.argv[2] || '').split('-');
+let apiType = newapi.pop().toLowerCase();
+    newapi = newapi[0].split('.');
+let filename = apiType + '.js';
+let newApiStr = newapi.join('/');
+
+if (action.indexOf(apiType) < 0){
+    console.log('api类型错误'.red);
+}
+if (!newapi.length) {
+    console.log('api参数不能为空'.red);
+    return;
+}
+
+let createFolder = (function() {
+    let rootDir = './app/api/';
+    return function(dirArr, fn) {
+        let dirname = dirArr.shift();
+        if (!dirname) {
+            fn(rootDir);
+            return;
+        }
+        fs.mkdir(`${rootDir}${dirname}`, function(err) {
+            if (err && err.errno !== -4075) {
+                console.error(err);
+                return;
+            }
+            rootDir += dirname + '/';
+            createFolder(dirArr, fn);
+        });
+    }
+})();
+
+let createFile = (function() {
+    return function(filename, fn) {
+        fs.exists(filename, function(exists) {
+            if (exists) {
+                console.log('api [' + process.argv[2] +'] 已经存在!');
+                return;
+            }
+            fs.readFile('./bin/apitemplate.js', 'UTF-8', function(err, data) {
+                if (err) {
+                    console.error(err);
+                    return;
+                };
+                fs.writeFile(filename, data, function(err) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    fn(filename);
+                });
+            });
+        });
+    }
+})();
+
+console.log('Api type: ' + apiType);
+console.log('Api url: ' + envConfig.api_base + newApiStr);
+console.log('Creating...'.green);
+createFolder(newapi, function(path) {
+    createFile(path + filename, function(filename) {
+        let url = `http://${envConfig.domain}${envConfig.api_base}/${newApiStr}`;
+        if(apiType === 'get'){
+            open(`${url}?test=feirpri`);
+        }
+        console.log(`create api [${newApiStr}] Success!`.green);
+        console.log('');
+        console.log(`访问 ${url} 进行测试`);
+        console.log('可指定参数 test[参数校验测试], timeout[异步任务测试], error[抛出错误测试]');
+        exec(`subl ${filename}`);
+    });
+});

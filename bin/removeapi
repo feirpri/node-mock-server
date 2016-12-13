@@ -1,0 +1,34 @@
+let fs = require('fs');
+let colors = require('colors');
+let api = (process.argv[2] || '');
+if (!api.length) {
+    console.error('api参数不能为空');
+    return;
+}
+
+let args = process.argv[2].split('-');
+let directory = args[0].replace(/\./ig, '\/');
+let filename = args[1] + '.js';
+
+console.log('removing...' + process.argv[2]);
+fs.unlink('./app/api/'+api.replace(/\.|-/ig,'\/')+'.js', function(err){
+    if(err){
+        console.log(`api [${process.argv[2]}] 不存在`.red);
+        return;
+    }
+
+    fs.readdir('./app/api/' + directory, function(err,files){  
+        if(!err && !files.length){
+            console.log('正在清理空目录...');
+            // 空目录，直接删除
+            fs.rmdir('./app/api/' + directory, function(err){
+                if(err){
+                    console.error('删除目录失败'.red);
+                }else{
+                    console.log('Success!'.green);
+                }
+            });
+        } 
+    }); 
+    console.log(`remove api [${process.argv[2]}] success!`.green);
+});
