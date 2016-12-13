@@ -3,7 +3,7 @@ let Api      = require(`${rootDir}/app/api/api.js`);
 let ApiError = require(`${rootDir}/app/api/apierror.js`);
 
 // 定义参数规则
-var paramRegular = {
+let paramRegular = {
 	test: [Number, 'required']
 }
 
