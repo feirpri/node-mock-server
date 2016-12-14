@@ -20,6 +20,11 @@ app.use(envConfig.application.api_base, function(req, res, next) {
 		params = req.query,
 		method = req.method.toLowerCase();
 
+	if(params.error){
+		res.json(apiDecorate(10000, '未知错误'));
+		return;
+	}
+
 	(Object.keys(req.body || {})).forEach((item) => {
 		params[item] = req.body[item];
 	});
