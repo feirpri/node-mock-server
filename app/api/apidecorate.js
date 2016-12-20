@@ -8,11 +8,11 @@ function decorate(code = '0', body, header = {}){
 	if(!info){ return; }
 	
 	return {
-		Code: code,
-		Msg: info.info.replace(/\{([^\}]+)\}/ig, function(a,b){
+		code: code,
+		msg: info.info.replace(/\{([^\}]+)\}/ig, function(a,b){
 			return header[b] || '';
 		}),
-		Data: code == 0 ? body : ''
+		data: code == 0 ? body : ''
 	}
 }
 

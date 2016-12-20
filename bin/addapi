@@ -75,6 +75,6 @@ createFolder(newapi, function(path) {
         console.log('');
         console.log(`访问 ${url} 进行测试`);
         console.log('可指定参数 test[参数校验测试], timeout[异步任务测试], error[抛出错误测试]');
-        exec(`subl ${filename}`);
+        exec(`'C:\\Program Files\\Sublime Text 3\subl.exe' ${filename}`);
     });
 });
