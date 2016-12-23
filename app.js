@@ -14,6 +14,11 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.query());
 
+app.use(function(req, res, next){
+	console.log(req.path);
+	next();
+});
+
 /* API */
 app.use(envConfig.application.api_base, function(req, res, next) {
 	let apiPath = req.path,
